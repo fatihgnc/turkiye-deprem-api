@@ -19,7 +19,7 @@ Filtreleme işleminde tarih bilgisini girerken, 'yyyy.mm.dd hh:mm:ss' ya da 'yyy
 
 #### *NOT: Yukarda tüm kullanım örnekleri yoktur. Dilediğiniz filtrelemeyi yapabilir, hepsini(tarih, büyüklük ve lokasyon) birbiriyle harmanlayarak kullanabilirsiniz.*
 
->Proje: [https://trdepremapi.herokuapp.com/](https://trdepremapi.herokuapp.com/)
+>Proje: [https://turkiye-deprem-api.herokuapp.com/](https://turkiye-deprem-api.herokuapp.com/)
 #### Verilerin çekildiği kaynak: [Kandilli rasathanesi](http://www.koeri.boun.edu.tr/scripts/lst7.asp)
 
 #### /api

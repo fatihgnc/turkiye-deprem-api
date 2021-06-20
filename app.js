@@ -1,3 +1,14 @@
+class Earthquake {
+    constructor(tarih, enlem, boylam, derinlik, buyukluk, lokasyon) {
+        this.tarih = tarih
+        this.enlem = enlem 
+        this.boylam = boylam
+        this.derinlik = derinlik 
+        this.buyukluk = buyukluk 
+        this.lokasyon = lokasyon
+    }
+}
+
 (async () => {
     // importing necessary modules
     const express = require('express')
@@ -19,38 +30,39 @@
     // getting the part we want and splicing unnecessary stuff
     const rawData = $('pre').text().split('\n')
     rawData.splice(0, 6)
+    rawData.splice(rawData.length - 2, 2)
 
     // formatting data
     let formattedData = []
     let earthquakeData = []
 
     for (let i = 0; i < rawData.length; i++) {
-        formattedData.push(rawData[i].split('  '))
+        formattedData.push(rawData[i].split(/\s{1,}/g))     
     }
 
-    // flattening 2d array
-    formattedData = formattedData.flat()
-
     // removing unwanted data
-    for(let i = formattedData.length-1; i >= 0; i--) {
-        if (formattedData[i] === '' || 
-            formattedData[i].includes('lksel') || 
-            formattedData[i].includes('REVIZE') || 
-            formattedData[i].includes('(2021')) {
-                formattedData.splice(i, 1)
-            }
+    for(let i = 0; i < formattedData.length; i++) {
+        let data = formattedData[i]
+
+        data.splice(5, 1)
+        data.splice(6, 1)
+        data.splice(data.length - 1, 1)
+
+        if (data[data.length - 1].match(/\d{4}\.\d{2}\.\d{2}/)) 
+            data.splice(data.length - 2, 2)
     }
 
     // storing data as an object in array
-    for(let i = 0; i < formattedData.length; i += 8) {
-        earthquakeData.push({
-            tarih: formattedData[i],
-            enlem: formattedData[i+1],
-            boylam: formattedData[i+2],
-            derinlik: formattedData[i+3],
-            buyukluk: formattedData[i+5],
-            lokasyon: formattedData[i+7]
-        })
+    for(let i = 0; i < formattedData.length; i += 1) {
+        let data = formattedData[i]
+        
+        // destructuring info from the formatted earthquake data
+        let [tarih, enlem, boylam, derinlik, buyukluk, lokasyon] = [data[0] + ' ' + data[1], data[2], data[3], data[4], data[5], data.slice(6, )]
+        lokasyon = lokasyon.join('-')
+
+        let earthquake = new Earthquake(tarih, enlem, boylam, derinlik, buyukluk, lokasyon)
+
+        earthquakeData.push(earthquake)
     }
 
     // any request coming to this route will be redirected to /api route
@@ -120,7 +132,7 @@
             })
         }
 
-        res.status(200).send(filteredData)
+        res.status(200).json(filteredData)
     })
 
     app.listen(PORT, () => {

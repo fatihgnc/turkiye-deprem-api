@@ -127,7 +127,8 @@ class Earthquake {
         }
 
         // allowing access
-        res.setHeader('Access-Control-Allow-Origin', '*')
+        // res.setHeader('Access-Control-Allow-Origin', '*')
+
         // if no data matches the filters, then return bad request
         if (filteredData.length === 0) {
             return res.status(400).send({
